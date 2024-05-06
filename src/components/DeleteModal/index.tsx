@@ -9,7 +9,7 @@ export default function DeleteModal() {
 
   async function handleDeleteUser() {
     try {
-      await api.delete(`/user/${id}`);
+      await api.delete(`/student/${id}`);
       setDeleteModalOpen(false);
       setId(null!);
       mutate("/users");

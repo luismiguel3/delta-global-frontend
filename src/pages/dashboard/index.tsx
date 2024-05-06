@@ -15,7 +15,7 @@ import CreateEdit from "../../components/CreateEditModal";
 import { useModalsDashboardStore } from "../../context/useModalsDashboardStore";
 
 async function getUsers() {
-  return api.get("/users").then((response) => response.data);
+  return api.get("/students").then((response) => response.data);
 }
 
 export default function Dashboard() {

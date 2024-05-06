@@ -53,12 +53,7 @@ export default function useCreateStudent() {
 
   const submit = async (data: any) => {
     try {
-      const { data: user } = await api.post("/user", {
-        ...data,
-        role: "user",
-        password: "123",
-        photo: null,
-      });
+      const { data: user } = await api.post("/student", data);
 
       if (data.photo) await submitPhoto(user.id, data.photo);
 

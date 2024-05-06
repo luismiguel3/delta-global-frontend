@@ -15,7 +15,7 @@ export default function useEditStudent({ reset }: any) {
   async function getUsers() {
     setLoading(true);
     try {
-      const { data } = await api.get(`/user/${id}`);
+      const { data } = await api.get(`/student/${id}`);
       handleGetEditUser(data);
     } catch (error) {
       console.log(error);
@@ -31,6 +31,8 @@ export default function useEditStudent({ reset }: any) {
       phone: data.phone,
       photo: data.photo,
       address: data.address,
+      institution: data.institution,
+      course: data.course,
     });
   }
 
