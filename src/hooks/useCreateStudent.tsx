@@ -1,4 +1,3 @@
-import react, { useCallback } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import swr, { mutate } from "swr";
@@ -36,6 +35,8 @@ export default function useCreateStudent() {
     },
   });
 
+  const { id } = useModalsDashboardStore();
+
   const submitPhoto = async (id: number, photo: any) => {
     const config = {
       headers: {
@@ -51,9 +52,18 @@ export default function useCreateStudent() {
     await api.post(`/image/${id}`, formData, config);
   };
 
+  const handlePostOrInput = async (data: any) => {
+    if (id) {
+      return await api
+        .put(`/student/${id}`, data)
+        .then((response) => response.data);
+    }
+    return await api.post("/student", data).then((response) => response.data);
+  };
+
   const submit = async (data: any) => {
     try {
-      const { data: user } = await api.post("/student", data);
+      const user = await handlePostOrInput({ ...data, photo: null });
 
       if (data.photo) await submitPhoto(user.id, data.photo);
 

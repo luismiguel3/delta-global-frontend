@@ -61,8 +61,6 @@ declare module "@mui/material/styles" {
   interface Palette {
     danger: Palette["primary"];
   }
-  // interface Palette extends CustomPalette {}
-  // interface PaletteOptions extends CustomPalette {}
   interface PaletteColor {
     100: string;
     200: string;

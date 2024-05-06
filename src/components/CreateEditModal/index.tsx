@@ -6,8 +6,10 @@ import { InputContainer, InputAvatar } from "./index.styles";
 import useEditStudent from "../../hooks/useEditStudent";
 
 export default function CreateEdit() {
-  const { createEdit, setCreateEditOpen, id, setId } = useModalsDashboardStore();
-  const { register, errors, submit, handleImageChange, image, reset } = useCreateStudent();
+  const { createEdit, setCreateEditOpen, id, setId } =
+    useModalsDashboardStore();
+  const { register, errors, submit, handleImageChange, image, reset } =
+    useCreateStudent();
 
   const { loading } = useEditStudent({ reset });
 
@@ -124,7 +126,7 @@ export default function CreateEdit() {
               width: "80%",
             }}
             type="submit">
-            Cadastrar
+            {id ? "Editar" : "Cadastrar"}
           </Button>
         </Box>
       </Box>

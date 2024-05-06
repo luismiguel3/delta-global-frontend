@@ -15,7 +15,6 @@ export default function useNavBar() {
   const handleCloseNavMenu = () => setAnchorElNav(null);
 
   const handleOpenUserMenu = () => logout();
-    //setAnchorElUser(event.currentTarget);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) =>
     setAnchorElNav(event.currentTarget);

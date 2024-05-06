@@ -60,11 +60,6 @@ export default function Dashboard() {
               variant="h4">
               Dashboard
             </Typography>
-            {/* <img
-              src="http://localhost:8080/image/1"
-              alt="logo"
-              style={{ width: "200px", height: "200px" }}
-            /> */}
           </Box>
           <DataGrid
             rows={users}

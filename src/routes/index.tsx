@@ -41,29 +41,3 @@ export default function RoutesFunction() {
     </Routes>
   );
 }
-
-// const RoutesFunction = () => {
-//   const Private = ({ children }) => {
-//       const { authenticated, loading } = useContext(AuthContext);
-
-//       if (loading) {
-//           return <div>Carregando...</div>;
-//       }
-
-//       return authenticated ? children : <Navigate to="/" />;
-//   };
-
-//   return (
-//       <AuthProvider>
-//           <Routes>
-//               <Route path="/" element={<SignInPage />} />
-//               <Route path="/register" element={<RegisterPage />} />
-
-//               <Route
-//                   path="/dashboard"
-//                   element={
-//                       <Private>
-//                           <Dashboard />
-//                       </Private>
-//                   }
-//               />
