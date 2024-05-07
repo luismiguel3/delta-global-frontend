@@ -13,6 +13,8 @@ export default function CreateEdit() {
 
   const { loading } = useEditStudent({ reset });
 
+  console.log("aqu")
+
   if (loading) return <div>Carregando...</div>;
 
   return (
@@ -27,22 +29,29 @@ export default function CreateEdit() {
             image: "",
           },
           address: "",
+          institution: "",
+          course: "",
         });
         setCreateEditOpen(false);
         setId(null!);
       }}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-      closeAfterTransition
-      sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+      sx={{
+        justifySelf: "center",
+        maxWidth: "80vw",
+        maxHeight: "90vh",
+      }}>
       <Box
         component="form"
         noValidate
+        id="form"
         onSubmit={submit}
+        //there is a function to called when the component mount?
+
         sx={{
           backgroundColor: "#fff",
           padding: "50px",
-          borderRadius: "15px",
+          overflow: "scroll",
+          maxHeight: "90vh",
         }}>
         <Typography
           variant="h4"
@@ -111,6 +120,30 @@ export default function CreateEdit() {
           autoFocus
           {...register("address")}
           error={!!errors.address}
+        />
+        <TextField
+          margin="normal"
+          fullWidth
+          id="institution"
+          label="Instituição"
+          autoComplete="institution"
+          hiddenLabel
+          InputProps={{ sx: { borderRadius: 3 } }}
+          autoFocus
+          {...register("institution")}
+          error={!!errors.institution}
+        />
+        <TextField
+          margin="normal"
+          fullWidth
+          id="course"
+          label="Curso"
+          autoComplete="course"
+          hiddenLabel
+          InputProps={{ sx: { borderRadius: 3 } }}
+          autoFocus
+          {...register("course")}
+          error={!!errors.course}
         />
         <Box
           sx={{

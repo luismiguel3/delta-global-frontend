@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import swr, { mutate } from "swr";
+import { mutate } from "swr";
 import * as yup from "yup";
 import { toast } from "react-toastify";
 import api from "../services/api";
@@ -13,6 +13,8 @@ export default function useCreateStudent() {
     email: yup.string().email().required(),
     phone: yup.string(),
     address: yup.string(),
+    institution: yup.string(),
+    course: yup.string(),
     photo: yup
       .object({
         image: yup.string(),
