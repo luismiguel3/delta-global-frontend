@@ -1,11 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
+import { Box, Grid, Typography } from "@mui/material";
+
+import { Edit, Delete } from "@mui/icons-material";
 import useSWR from "swr";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+
 import { logout } from "../../hooks/useAuth";
 import api from "../../services/api";
 import ResponsiveAppBar from "../../components/navBar";
@@ -19,7 +18,8 @@ async function getUsers() {
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { setDeleteModalOpen, setId, setCreateEditOpen, id } = useModalsDashboardStore();
+  const { setDeleteModalOpen, setId, setCreateEditOpen, createEditModal } =
+    useModalsDashboardStore();
 
   const { data: users, isLoading } = useSWR("/users", getUsers);
 
@@ -78,14 +78,14 @@ export default function Dashboard() {
                         gap: "20px",
                         height: "100%",
                       }}>
-                      <EditIcon
+                      <Edit
                         sx={{ color: "primary.500" }}
                         onClick={() => {
                           setId(params.row.id);
                           setCreateEditOpen(true);
                         }}
                       />
-                      <DeleteIcon
+                      <Delete
                         sx={{ color: "danger.700", cursor: "pointer" }}
                         onClick={() => {
                           setDeleteModalOpen(true);
@@ -129,9 +129,7 @@ export default function Dashboard() {
           />
         </Box>
       </Grid>
-      {
-        CreateEdit && <CreateEdit />
-      }
+      {createEditModal && <CreateEdit />}
       <DeleteModal />
     </Box>
   );

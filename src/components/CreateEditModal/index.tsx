@@ -2,56 +2,47 @@ import { Box, Button, Typography, Modal } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { useModalsDashboardStore } from "../../context/useModalsDashboardStore";
 import useCreateStudent from "../../hooks/useCreateStudent";
-import { InputContainer, InputAvatar } from "./index.styles";
 import useEditStudent from "../../hooks/useEditStudent";
+import { InputContainer, InputAvatar } from "./index.styles";
+import useHandleFields from "./useHandleFields";
 
 export default function CreateEdit() {
-  const { createEdit, setCreateEditOpen, id, setId } =
-    useModalsDashboardStore();
-  const { register, errors, submit, handleImageChange, image, reset } =
-    useCreateStudent();
+  const { createEditModal, id } = useModalsDashboardStore();
+  const {
+    register,
+    errors,
+    watch,
+    resetFieldsOnClose,
+    handleImageChange,
+    handleSubmit,
+  } = useHandleFields();
 
-  const { loading } = useEditStudent({ reset });
+  const { submit } = id
+    ? useEditStudent(handleSubmit)
+    : useCreateStudent(handleSubmit);
 
-  console.log("aqu")
-
-  if (loading) return <div>Carregando...</div>;
+  //const image = watch("photo");
+  const image = watch("photo.image");
 
   return (
     <Modal
-      open={createEdit}
-      onClose={() => {
-        reset({
-          name: "",
-          email: "",
-          phone: "",
-          photo: {
-            image: "",
-          },
-          address: "",
-          institution: "",
-          course: "",
-        });
-        setCreateEditOpen(false);
-        setId(null!);
-      }}
+      open={createEditModal}
+      onClose={resetFieldsOnClose}
       sx={{
+        display: "flex",
         justifySelf: "center",
-        maxWidth: "80vw",
-        maxHeight: "90vh",
+        alignItems: "center",
+        maxWidth: "90vw",
       }}>
       <Box
         component="form"
         noValidate
         id="form"
         onSubmit={submit}
-        //there is a function to called when the component mount?
-
         sx={{
           backgroundColor: "#fff",
           padding: "50px",
-          overflow: "scroll",
-          maxHeight: "90vh",
+          borderRadius: 5,
         }}>
         <Typography
           variant="h4"
@@ -64,8 +55,8 @@ export default function CreateEdit() {
         </Typography>
         <InputContainer>
           <label htmlFor="file-input">
-            <InputAvatar src={image?.image || ""} alt="Upload image">
-              {image?.image ? "" : "Adicionar Foto"}
+            <InputAvatar src={image || ""} alt="Upload image">
+              {image ? "" : "Adicionar Foto"}
             </InputAvatar>
           </label>
           <input
@@ -77,74 +68,123 @@ export default function CreateEdit() {
             onChange={handleImageChange}
           />
         </InputContainer>
-        <TextField
-          margin="normal"
-          fullWidth
-          id="name"
-          autoComplete="name"
-          label="Nome"
-          InputProps={{ sx: { borderRadius: 3 } }}
-          autoFocus
-          {...register("name")}
-          error={!!errors.name}
-        />
-        <TextField
-          margin="normal"
-          fullWidth
-          id="email"
-          label="E-mail"
-          autoComplete="email"
-          InputProps={{ sx: { borderRadius: 3 } }}
-          autoFocus
-          {...register("email")}
-          error={!!errors.email}
-        />
-        <TextField
-          margin="normal"
-          fullWidth
-          id="phone"
-          label="Telefone"
-          autoComplete="phone"
-          InputProps={{ sx: { borderRadius: 3 } }}
-          {...register("phone")}
-          error={!!errors.phone}
-        />
-        <TextField
-          margin="normal"
-          fullWidth
-          id="address"
-          label="Endereço"
-          autoComplete="address"
-          hiddenLabel
-          InputProps={{ sx: { borderRadius: 3 } }}
-          autoFocus
-          {...register("address")}
-          error={!!errors.address}
-        />
-        <TextField
-          margin="normal"
-          fullWidth
-          id="institution"
-          label="Instituição"
-          autoComplete="institution"
-          hiddenLabel
-          InputProps={{ sx: { borderRadius: 3 } }}
-          autoFocus
-          {...register("institution")}
-          error={!!errors.institution}
-        />
-        <TextField
-          margin="normal"
-          fullWidth
-          id="course"
-          label="Curso"
-          autoComplete="course"
-          hiddenLabel
-          InputProps={{ sx: { borderRadius: 3 } }}
-          autoFocus
-          {...register("course")}
-          error={!!errors.course}
-        />
+        <Box
+          sx={{
+            display: "flex",
+            gap: "20px",
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}>
+          <Box
+            width="30%"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+            }}>
+            <Typography
+              style={{
+                color: "#000",
+                fontSize: "1rem",
+                fontWeight: 500,
+              }}>
+              Nome Completo
+            </Typography>
+            <TextField
+              margin="dense"
+              id="name"
+              autoComplete="name"
+              //label="Nome"
+              InputProps={{ sx: { borderRadius: 2 } }}
+              autoFocus
+              {...register("name")}
+              error={!!errors.name}
+            />
+          </Box>
+          <TextField
+            margin="normal"
+            id="email"
+            label="E-mail"
+            autoComplete="email"
+            InputProps={{ sx: { borderRadius: 3 } }}
+            autoFocus
+            sx={{
+              //border: "1px solid #000",
+              width: "30%",
+            }}
+            {...register("email")}
+            error={!!errors.email}
+          />
+          <TextField
+            margin="normal"
+            id="phone"
+            label="Telefone"
+            autoComplete="phone"
+            sx={{
+              //border: "1px solid #000",
+              width: "30%",
+            }}
+            InputProps={{ sx: { borderRadius: 3 } }}
+            {...register("phone")}
+            error={!!errors.phone}
+          />
+          <TextField
+            margin="normal"
+            id="address"
+            label="Endereço"
+            autoComplete="address"
+            hiddenLabel
+            sx={{
+              //border: "1px solid #000",
+              width: "30%",
+            }}
+            InputProps={{ sx: { borderRadius: 3 } }}
+            autoFocus
+            {...register("address")}
+            error={!!errors.address}
+          />
+          <TextField
+            margin="normal"
+            id="institution"
+            label="Instituição"
+            autoComplete="institution"
+            hiddenLabel
+            sx={{
+              //border: "1px solid #000",
+              width: "30%",
+            }}
+            InputProps={{ sx: { borderRadius: 3 } }}
+            autoFocus
+            {...register("institution")}
+            error={!!errors.institution}
+          />
+          <TextField
+            margin="normal"
+            id="course"
+            label="Curso"
+            autoComplete="course"
+            hiddenLabel
+            sx={{
+              width: "30%",
+            }}
+            InputProps={{ sx: { borderRadius: 3 } }}
+            // InputLabelProps={{
+            //   shrink: true,
+            //   sx(theme) {
+            //     return {
+            //       color: "black",
+            //       fontSize: "1.5rem",
+            //       left: "10px",
+            //       "&.Mui-focused": {
+            //         color: theme.palette.primary.main,
+            //       },
+            //     };
+            //   },
+            // }}
+            autoFocus
+            {...register("course")}
+            error={!!errors.course}
+          />
+        </Box>
         <Box
           sx={{
             width: "100%",

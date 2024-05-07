@@ -5,7 +5,7 @@ export const InputContainer = styled("div")({
   alignItems: "center",
   display: "flex",
   justifyContent: "center",
-  margin: "30px 0"
+  margin: "20px 0"
 });
 
 export const InputAvatar = styled(Avatar)({
