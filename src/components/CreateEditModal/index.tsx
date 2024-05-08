@@ -1,10 +1,20 @@
-import { Box, Button, Typography, Modal } from "@mui/material";
-import TextField from "@mui/material/TextField";
+import { Box, Typography, Modal } from "@mui/material";
 import { useModalsDashboardStore } from "../../context/useModalsDashboardStore";
 import useCreateStudent from "../../hooks/useCreateStudent";
 import useEditStudent from "../../hooks/useEditStudent";
 import { InputContainer, InputAvatar } from "./index.styles";
-import useHandleFields from "./useHandleFields";
+import useHandleFields from "../../hooks/useHandleFieldsCreateEdit";
+import CustomButton from "../Button";
+import CustomInput from "../Input";
+
+const inputFields = [
+  { label: "Nome Completo", id: "name" },
+  { label: "E-mail", id: "email" },
+  { label: "Telefone", id: "phone" },
+  { label: "Endereço", id: "address" },
+  { label: "Instiuição", id: "institution" },
+  { label: "Curso", id: "course" },
+];
 
 export default function CreateEdit() {
   const { createEditModal, id } = useModalsDashboardStore();
@@ -14,15 +24,14 @@ export default function CreateEdit() {
     watch,
     resetFieldsOnClose,
     handleImageChange,
-    handleSubmit,
+    submitProps,
   } = useHandleFields();
 
   const { submit } = id
-    ? useEditStudent(handleSubmit)
-    : useCreateStudent(handleSubmit);
+    ? useEditStudent(submitProps)
+    : useCreateStudent(submitProps);
 
-  //const image = watch("photo");
-  const image = watch("photo.image");
+  const image = watch("photo");
 
   return (
     <Modal
@@ -55,7 +64,7 @@ export default function CreateEdit() {
         </Typography>
         <InputContainer>
           <label htmlFor="file-input">
-            <InputAvatar src={image || ""} alt="Upload image">
+            <InputAvatar src={image?.image} alt="Upload image">
               {image ? "" : "Adicionar Foto"}
             </InputAvatar>
           </label>
@@ -75,132 +84,45 @@ export default function CreateEdit() {
             flexWrap: "wrap",
             justifyContent: "center",
           }}>
-          <Box
-            width="30%"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-            }}>
-            <Typography
-              style={{
-                color: "#000",
-                fontSize: "1rem",
-                fontWeight: 500,
-              }}>
-              Nome Completo
-            </Typography>
-            <TextField
-              margin="dense"
-              id="name"
-              autoComplete="name"
-              //label="Nome"
-              InputProps={{ sx: { borderRadius: 2 } }}
-              autoFocus
-              {...register("name")}
-              error={!!errors.name}
+          {inputFields.map((input) => (
+            <CustomInput
+              key={input.id}
+              label={input.label}
+              id={input.id}
+              register={register}
+              errors={errors}
+              containerProps={{
+                width: "30%",
+              }}
             />
-          </Box>
-          <TextField
-            margin="normal"
-            id="email"
-            label="E-mail"
-            autoComplete="email"
-            InputProps={{ sx: { borderRadius: 3 } }}
-            autoFocus
-            sx={{
-              //border: "1px solid #000",
-              width: "30%",
-            }}
-            {...register("email")}
-            error={!!errors.email}
-          />
-          <TextField
-            margin="normal"
-            id="phone"
-            label="Telefone"
-            autoComplete="phone"
-            sx={{
-              //border: "1px solid #000",
-              width: "30%",
-            }}
-            InputProps={{ sx: { borderRadius: 3 } }}
-            {...register("phone")}
-            error={!!errors.phone}
-          />
-          <TextField
-            margin="normal"
-            id="address"
-            label="Endereço"
-            autoComplete="address"
-            hiddenLabel
-            sx={{
-              //border: "1px solid #000",
-              width: "30%",
-            }}
-            InputProps={{ sx: { borderRadius: 3 } }}
-            autoFocus
-            {...register("address")}
-            error={!!errors.address}
-          />
-          <TextField
-            margin="normal"
-            id="institution"
-            label="Instituição"
-            autoComplete="institution"
-            hiddenLabel
-            sx={{
-              //border: "1px solid #000",
-              width: "30%",
-            }}
-            InputProps={{ sx: { borderRadius: 3 } }}
-            autoFocus
-            {...register("institution")}
-            error={!!errors.institution}
-          />
-          <TextField
-            margin="normal"
-            id="course"
-            label="Curso"
-            autoComplete="course"
-            hiddenLabel
-            sx={{
-              width: "30%",
-            }}
-            InputProps={{ sx: { borderRadius: 3 } }}
-            // InputLabelProps={{
-            //   shrink: true,
-            //   sx(theme) {
-            //     return {
-            //       color: "black",
-            //       fontSize: "1.5rem",
-            //       left: "10px",
-            //       "&.Mui-focused": {
-            //         color: theme.palette.primary.main,
-            //       },
-            //     };
-            //   },
-            // }}
-            autoFocus
-            {...register("course")}
-            error={!!errors.course}
-          />
+          ))}
         </Box>
         <Box
           sx={{
             width: "100%",
-            justifyContent: "center",
+            justifyContent: "flex-end",
             display: "flex",
+            mt: 10,
+            gap: 3,
           }}>
-          <Button
-            variant="contained"
+          <CustomButton
+            onClick={resetFieldsOnClose}
             sx={{
-              mt: 3,
-              borderRadius: 3,
-              width: "80%",
-            }}
-            type="submit">
+              width: "20%",
+              backgroundColor: "danger.700",
+              "&:hover": {
+                backgroundColor: "danger.800",
+              },
+            }}>
+            Cancelar
+          </CustomButton>
+          <CustomButton
+            type="submit"
+            sx={{
+              width: "20%",
+            }}>
             {id ? "Editar" : "Cadastrar"}
-          </Button>
+          </CustomButton>
         </Box>
       </Box>
     </Modal>

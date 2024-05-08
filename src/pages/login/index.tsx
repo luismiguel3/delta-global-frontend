@@ -1,11 +1,11 @@
-import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import useLogin from "../../hooks/useLogin";
+import CustomButton from "../../components/Button";
+import CustomInput from "../../components/Input";
 
 export default function SignInSide() {
   const { register, errors, submit } = useLogin();
@@ -16,7 +16,7 @@ export default function SignInSide() {
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <Box
           sx={{
-            mx: "20%",
+            mx: "15%",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
@@ -26,56 +26,50 @@ export default function SignInSide() {
           <img
             src="https://www.deltaglobal.com.br/assets/nova_home/img/deltaGlobal-deltagrupo-logo-color.svg"
             alt="trucks"
-            width={150}
+            width={"180rem"}
           />
           <Typography
             variant="h6"
             sx={{ mt: 5 }}
-            fontSize="1.2rem"
+            fontSize="1.3rem"
             textAlign="center">
             Entre com sua conta Delta Global
           </Typography>
-          <Box component="form" noValidate onSubmit={submit} sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              fullWidth
+          <Box
+            component="form"
+            noValidate
+            onSubmit={submit}
+            sx={{
+              width: "100%",
+              mt: 4,
+              display: "flex",
+              flexDirection: "column",
+              gap: "1rem",
+            }}>
+            <CustomInput
               id="email"
               label="E-mail"
               autoComplete="email"
-              InputProps={{ sx: { borderRadius: 3 } }}
-              autoFocus
-              {...register("email")}
-              error={!!errors.email}
-            />
-            <TextField
-              margin="normal"
               fullWidth
+              register={register}
+              errors={errors}
+            />
+            <CustomInput
+              id="password"
               label="Senha"
               type="password"
-              id="password"
               autoComplete="current-password"
-              InputProps={{ sx: { borderRadius: 3 } }}
-              {...register("password")}
-              error={!!errors.password}
-            />
-            <Button
-              type="submit"
               fullWidth
-              variant="contained"
-              color="primary"
-              size="large"
+              register={register}
+              errors={errors}
+            />
+            <CustomButton
               sx={{
                 mt: 3,
-                mb: 2,
-                borderRadius: 3,
-                height: 50,
-                backgroundColor: "primary.500",
-                "&:hover": {
-                  backgroundColor: "#63AED1",
-                },
-              }}>
+              }}
+              onClick={submit}>
               Entrar
-            </Button>
+            </CustomButton>
           </Box>
         </Box>
       </Grid>

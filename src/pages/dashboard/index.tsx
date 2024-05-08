@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, Grid, Typography } from "@mui/material";
 
-import { Edit, Delete } from "@mui/icons-material";
+import { Edit, Delete, Visibility } from "@mui/icons-material";
 import useSWR from "swr";
 
 import { logout } from "../../hooks/useAuth";
@@ -67,7 +67,8 @@ export default function Dashboard() {
               {
                 field: "option",
                 headerName: "Opções",
-                flex: 0.8,
+                flex: 1,
+                minWidth: 150,
                 renderCell: (params) => {
                   return (
                     <Box
@@ -78,8 +79,16 @@ export default function Dashboard() {
                         gap: "20px",
                         height: "100%",
                       }}>
+                      <Visibility
+                        sx={{ color: "primary.500", cursor: "pointer" }}
+                      />
                       <Edit
-                        sx={{ color: "primary.500" }}
+                        sx={{
+                          color: "white",
+                          cursor: "pointer",
+                          backgroundColor: "secundary.800",
+                          borderRadius: "10%",
+                        }}
                         onClick={() => {
                           setId(params.row.id);
                           setCreateEditOpen(true);
@@ -98,7 +107,7 @@ export default function Dashboard() {
               },
               { field: "name", headerName: "Nome", flex: 2 },
               { field: "email", headerName: "E-mail", flex: 3 },
-              { field: "phone", headerName: "Telefone", flex: 1 },
+              { field: "phone", headerName: "Telefone", flex: 1.5 },
               { field: "address", headerName: "Endereço", flex: 3 },
             ]}
             sx={{
@@ -112,17 +121,11 @@ export default function Dashboard() {
               "& .MuiDataGrid-cell": {
                 paddingLeft: "30px",
               },
-              "& .MuiDataGrid-cell:focus": {
-                outline: "none",
-              },
               "& .MuiDataGrid-cell:focus-within": {
                 outline: "none",
               },
             }}
             rowSelection={false}
-            onRowClick={(row) => {
-              console.log(row);
-            }}
             slots={{
               noRowsOverlay: () => <div>Nenhum dado encontrado</div>,
             }}

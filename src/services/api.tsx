@@ -1,4 +1,5 @@
 import axios from "axios";
+import { logout } from "../hooks/useAuth";
 
 let abortController = new AbortController();
 let { signal } = abortController;
@@ -30,8 +31,11 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error?.response?.status !== 401) {
+    if (error?.response?.status !== 403) {
       return Promise.reject(error.response.data);
+    }
+    if (error?.response?.status === 403) {
+      logout();
     }
     if (error?.message === "request_cancelled") {
       return Promise.reject(error.response.data);

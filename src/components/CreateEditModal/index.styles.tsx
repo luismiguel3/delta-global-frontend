@@ -1,11 +1,12 @@
-import { styled } from "@mui/material/styles";
+import { styled } from "@mui/system";
 import Avatar from "@mui/material/Avatar";
+
 
 export const InputContainer = styled("div")({
   alignItems: "center",
   display: "flex",
   justifyContent: "center",
-  margin: "20px 0"
+  margin: "20px 0",
 });
 
 export const InputAvatar = styled(Avatar)({
@@ -15,3 +16,5 @@ export const InputAvatar = styled(Avatar)({
   border: "2px solid #a9a9a9",
   backgroundColor: "#a0a0a0",
 });
+
+

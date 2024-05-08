@@ -1,36 +1,37 @@
-//import { yupResolver } from "@hookform/resolvers/yup";
-//import { useForm } from "react-hook-form";
-//import { mutate } from "swr";
-//import * as yup from "yup";
-// import { toast } from "react-toastify";
-// import api from "../services/api";
-// import { useModalsDashboardStore } from "../context/useModalsDashboardStore";
-// import base64toBlob from "../utils/base64toBlob";
-import { useFormContext } from "react-hook-form";
+import { mutate } from "swr";
+import { toast } from "react-toastify";
+import api from "../services/api";
+import { useModalsDashboardStore } from "../context/useModalsDashboardStore";
+import { CreateEditSubmitProps, StudentProps } from "../types";
 
-export default function useCreateStudent(handleSubmit: any) {
-  async function testeee(data: any) {
-    console.log("data", data);
-    // const { name, email, phone, address, institution, course, photo } = data;
-    // const { image, name: photoName } = photo;
+export default function useCreateStudent({
+  reset,
+  handleSubmit,
+  submitPhoto,
+}: CreateEditSubmitProps) {
+  const { setCreateEditOpen } = useModalsDashboardStore();
 
-    // const formData = new FormData();
-    // formData.append("name", name);
-    // formData.append("email", email);
-    // formData.append("phone", phone);
-    // formData.append("address", address);
-    // formData.append("institution", institution);
-    // formData.append("course", course);
-    // //formData.append("photo", base64toBlob(image), photoName);
+  const submit = async (data: StudentProps) => {
+    console.log(data);
+    try {
+      const { data: user } = await api.post("/student", {
+        ...data,
+        photo: null,
+      });
 
-    // try {
-    //   await api.post("/student", formData);
-    //   mutate("/student");
-    //   toast.success("Aluno cadastrado com sucesso!");
-    // } catch (error) {
-    //   console.log(error);
-    //   toast.error("Erro ao cadastrar aluno");
-    // }
-  }
-  return { submit: handleSubmit(testeee) };
+      if (data.photo) await submitPhoto(user.id, data.photo);
+
+      toast.success("Aluno cadastrado com sucesso");
+      setCreateEditOpen(false);
+      mutate("/users");
+      reset();
+    } catch (e: any) {
+      console.log(e);
+      toast.error(e.message);
+    } finally {
+    }
+  };
+  return {
+    submit: handleSubmit(submit),
+  };
 }

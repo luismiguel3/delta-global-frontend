@@ -24,8 +24,6 @@ export default function DeleteModal() {
       onClose={() => {
         setDeleteModalOpen(false);
       }}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
       closeAfterTransition
       sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
       <Box

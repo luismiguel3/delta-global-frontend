@@ -17,7 +17,6 @@ export const useAuth = create<AuthProps>((set) => ({
 export function logout() {
   useAuth.setState({ authenticated: false, loading: false, user: null });
   localStorage.removeItem("auth");
-  
 }
 
 export function getLocalStorageAuth() {

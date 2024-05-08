@@ -46,7 +46,7 @@ function ResponsiveAppBar() {
             <Button
               onClick={() => {
                 setCreateEditOpen(true);
-                console.log("clicou");
+
               }}
               sx={{
                 my: 2,
@@ -63,7 +63,6 @@ function ResponsiveAppBar() {
             <Button
               onClick={() => {
                 handleOpenUserMenu();
-                console.log("clicou");
               }}
               sx={{
                 my: 2,
