@@ -14,13 +14,13 @@ export default function useCreateStudent({
   const submit = async (data: StudentProps) => {
     try {
       const { photo, ...body } = data;
-      const { data: user } = await createStudent(body);
-
-      if (data.photo) await submitPhoto(user.id, data.photo);
+      
+      const student = await createStudent(body);
+      if (data.photo) await submitPhoto(student.id, data.photo);
 
       toast.success("Aluno cadastrado com sucesso");
       setCreateEditOpen(false);
-      mutate("/users");
+      mutate("/student");
       reset();
     } catch (e: any) {
       console.log(e);

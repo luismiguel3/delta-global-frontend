@@ -2,7 +2,7 @@ import api from "./api";
 import { StudentProps } from "../types";
 
 export async function getAllStudents() {
-  return await api.get("/student").then((response) => response.data);
+  return await api.get("/students").then((response) => response.data);
 }
 
 export async function getStudent(id: number | null) {

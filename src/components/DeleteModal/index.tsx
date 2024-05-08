@@ -12,7 +12,7 @@ export default function DeleteModal() {
       await api.delete(`/student/${id}`);
       setDeleteModalOpen(false);
       setId(null!);
-      mutate("/users");
+      mutate("/student");
     } catch (error) {
       console.log(error);
     }

@@ -30,6 +30,7 @@ export default function CreateEdit() {
   const { submit } = id ? useEditStudent(submitProps) : useCreateStudent(submitProps);
 
   const image = watch("photo");
+  console.log(image)
 
   return (
     <Modal

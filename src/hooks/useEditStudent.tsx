@@ -4,15 +4,20 @@ import { useModalsDashboardStore } from "../context/useModalsDashboardStore";
 import { CreateEditSubmitProps, StudentProps, PhotoProps } from "../types";
 import { getStudent, editStudent } from "../services/student";
 
-export default function useEditStudent({
-  handleSubmit,
-  reset,
-  submitPhoto,
-}: CreateEditSubmitProps) {
+const configSWR = {
+  revalidateOnFocus: false,
+};
+
+export default function useEditStudent({handleSubmit, reset, submitPhoto}: CreateEditSubmitProps) {
   const { id, setCreateEditOpen } = useModalsDashboardStore();
-  const { isLoading } = swr(`/student/edit/${id}`, () =>
-    getStudent(id).then((data) => resetFields(data))
-  );
+
+  const { isLoading } = swr(`/student/edit/${id}`, fetcher, configSWR);
+
+  async function fetcher() {
+    const response = await getStudent(id);
+    resetFields(response);
+    return response;
+  }
 
   async function resetFields(data: StudentProps) {
     reset(data);
@@ -32,7 +37,7 @@ export default function useEditStudent({
 
       toast.success("Aluno editado com sucesso");
       setCreateEditOpen(false);
-      mutate("/users");
+      mutate("/student");
       reset();
     } catch (e: any) {
       console.log(e);
