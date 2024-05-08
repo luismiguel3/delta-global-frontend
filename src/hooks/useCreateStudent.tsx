@@ -1,8 +1,8 @@
 import { mutate } from "swr";
 import { toast } from "react-toastify";
-import api from "../services/api";
 import { useModalsDashboardStore } from "../context/useModalsDashboardStore";
 import { CreateEditSubmitProps, StudentProps } from "../types";
+import { createStudent } from "../services/student";
 
 export default function useCreateStudent({
   reset,
@@ -12,12 +12,9 @@ export default function useCreateStudent({
   const { setCreateEditOpen } = useModalsDashboardStore();
 
   const submit = async (data: StudentProps) => {
-    console.log(data);
     try {
-      const { data: user } = await api.post("/student", {
-        ...data,
-        photo: null,
-      });
+      const { photo, ...body } = data;
+      const { data: user } = await createStudent(body);
 
       if (data.photo) await submitPhoto(user.id, data.photo);
 
@@ -28,7 +25,6 @@ export default function useCreateStudent({
     } catch (e: any) {
       console.log(e);
       toast.error(e.message);
-    } finally {
     }
   };
   return {

@@ -1,8 +1,8 @@
-import api from "../services/api";
 import swr, { mutate } from "swr";
 import { toast } from "react-toastify";
 import { useModalsDashboardStore } from "../context/useModalsDashboardStore";
 import { CreateEditSubmitProps, StudentProps, PhotoProps } from "../types";
+import { getStudent, editStudent } from "../services/student";
 
 export default function useEditStudent({
   handleSubmit,
@@ -10,13 +10,9 @@ export default function useEditStudent({
   submitPhoto,
 }: CreateEditSubmitProps) {
   const { id, setCreateEditOpen } = useModalsDashboardStore();
-  const { isLoading } = swr(`/student/${id}`, getSudent);
-
-  async function getSudent() {
-    const response = await api.get(`/student/${id}`);
-    resetFields(response.data);
-    return response.data;
-  }
+  const { isLoading } = swr(`/student/edit/${id}`, () =>
+    getStudent(id).then((data) => resetFields(data))
+  );
 
   async function resetFields(data: StudentProps) {
     reset(data);
@@ -30,7 +26,7 @@ export default function useEditStudent({
     try {
       const { photo, ...body } = data;
 
-      await api.put(`/student/${id}`, body);
+      await editStudent(body, id!);
 
       if (photo && photoChanged(photo)) await submitPhoto(id!, photo);
 

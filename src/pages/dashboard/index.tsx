@@ -1,27 +1,30 @@
 import { useNavigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, Grid, Typography } from "@mui/material";
-
 import { Edit, Delete, Visibility } from "@mui/icons-material";
+
 import useSWR from "swr";
 
 import { logout } from "../../hooks/useAuth";
-import api from "../../services/api";
 import ResponsiveAppBar from "../../components/navBar";
 import DeleteModal from "../../components/DeleteModal";
 import CreateEdit from "../../components/CreateEditModal";
 import { useModalsDashboardStore } from "../../context/useModalsDashboardStore";
-
-async function getUsers() {
-  return api.get("/students").then((response) => response.data);
-}
+import DetailsModal from "../../components/DetailsModal";
+import { getAllStudents } from "../../services/student";
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { setDeleteModalOpen, setId, setCreateEditOpen, createEditModal } =
-    useModalsDashboardStore();
+  const {
+    setDeleteModalOpen,
+    setId,
+    setCreateEditOpen,
+    createEditModal,
+    detailsModal,
+    setDetailsModalOpen,
+  } = useModalsDashboardStore();
 
-  const { data: users, isLoading } = useSWR("/users", getUsers);
+  const { data: students, isLoading } = useSWR("/student", getAllStudents);
 
   if (isLoading) return <div>Carregando...</div>;
 
@@ -61,7 +64,7 @@ export default function Dashboard() {
             </Typography>
           </Box>
           <DataGrid
-            rows={users}
+            rows={students}
             rowHeight={50}
             columns={[
               {
@@ -81,6 +84,10 @@ export default function Dashboard() {
                       }}>
                       <Visibility
                         sx={{ color: "primary.500", cursor: "pointer" }}
+                        onClick={() => {
+                          setId(params.row.id);
+                          setDetailsModalOpen(true);
+                        }}
                       />
                       <Edit
                         sx={{
@@ -133,6 +140,7 @@ export default function Dashboard() {
         </Box>
       </Grid>
       {createEditModal && <CreateEdit />}
+      {detailsModal && <DetailsModal />}
       <DeleteModal />
     </Box>
   );

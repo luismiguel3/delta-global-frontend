@@ -33,9 +33,7 @@ export default function useHandleFields() {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      photo: {
-        image: "",
-      },
+      photo: null,
     },
   });
 
@@ -53,8 +51,8 @@ export default function useHandleFields() {
       institution: "",
       course: "",
     });
+    setId(null);
     setCreateEditOpen(false);
-    setId(null!);
   };
 
   const submitPhoto = async (id: number, photo: PhotoProps) => {

@@ -27,9 +27,7 @@ export default function CreateEdit() {
     submitProps,
   } = useHandleFields();
 
-  const { submit } = id
-    ? useEditStudent(submitProps)
-    : useCreateStudent(submitProps);
+  const { submit } = id ? useEditStudent(submitProps) : useCreateStudent(submitProps);
 
   const image = watch("photo");
 
