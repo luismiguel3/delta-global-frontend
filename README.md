@@ -14,6 +14,7 @@ Funcionalidades implementadas
 ## Instruções para configuração e execução
 
 Depois de baixar o projeto execute:
+
 `npm install`
 
 Para executar localmente de o comando:
