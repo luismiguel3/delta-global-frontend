@@ -1,11 +1,9 @@
-import { useNavigate } from "react-router-dom";
-import { DataGrid } from "@mui/x-data-grid";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { Edit, Delete, Visibility } from "@mui/icons-material";
+import * as S from "./index.styles";
 
 import useSWR from "swr";
 
-import { logout } from "../../hooks/useAuth";
 import ResponsiveAppBar from "../../components/navBar";
 import DeleteModal from "../../components/DeleteModal";
 import CreateEdit from "../../components/CreateEditModal";
@@ -14,7 +12,6 @@ import DetailsModal from "../../components/DetailsModal";
 import { getAllStudents } from "../../services/student";
 
 export default function Dashboard() {
-  const navigate = useNavigate();
   const {
     setDeleteModalOpen,
     setId,
@@ -32,38 +29,11 @@ export default function Dashboard() {
     <Box>
       <ResponsiveAppBar />
       <Grid container sx={{ height: "85vh", justifyContent: "center" }}>
-        <Box
-          sx={{
-            width: "80%",
-            height: "80vh",
-            alignItems: "center",
-            justifyContent: "center",
-          }}>
-          <Box
-            sx={{
-              display: "flex",
-              width: "80%",
-              backgroundColor: "primary.400",
-              borderRadius: "10px",
-              my: 5,
-            }}>
-            <Typography
-              sx={{
-                textAlign: "center",
-                cursor: "pointer",
-                padding: "10px 50px",
-                color: "#fff",
-              }}
-              onClick={() => {
-                logout();
-                navigate("/");
-              }}
-              fontWeight={700}
-              variant="h4">
-              Dashboard
-            </Typography>
-          </Box>
-          <DataGrid
+        <S.MainContainer>
+          <S.DashboardSection>
+            <S.Title variant="h4">Dashboard</S.Title>
+          </S.DashboardSection>
+          <S.Table
             rows={students}
             rowHeight={50}
             columns={[
@@ -74,14 +44,7 @@ export default function Dashboard() {
                 minWidth: 150,
                 renderCell: (params) => {
                   return (
-                    <Box
-                      sx={{
-                        alignItems: "center",
-                        display: "flex",
-                        flexDirection: "row",
-                        gap: "20px",
-                        height: "100%",
-                      }}>
+                    <S.IconsContainer>
                       <Visibility
                         sx={{ color: "primary.500", cursor: "pointer" }}
                         onClick={() => {
@@ -108,7 +71,7 @@ export default function Dashboard() {
                           setId(params.row.id);
                         }}
                       />
-                    </Box>
+                    </S.IconsContainer>
                   );
                 },
               },
@@ -117,27 +80,12 @@ export default function Dashboard() {
               { field: "phone", headerName: "Telefone", flex: 1.5 },
               { field: "address", headerName: "Endereço", flex: 3 },
             ]}
-            sx={{
-              height: "100%",
-              width: "100%",
-              boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.1)",
-
-              "& .MuiDataGrid-columnHeaders": {
-                paddingLeft: "20px",
-              },
-              "& .MuiDataGrid-cell": {
-                paddingLeft: "30px",
-              },
-              "& .MuiDataGrid-cell:focus-within": {
-                outline: "none",
-              },
-            }}
             rowSelection={false}
             slots={{
               noRowsOverlay: () => <div>Nenhum dado encontrado</div>,
             }}
           />
-        </Box>
+        </S.MainContainer>
       </Grid>
       {createEditModal && <CreateEdit />}
       {detailsModal && <DetailsModal />}

@@ -24,7 +24,7 @@ export default function useEditStudent({handleSubmit, reset, submitPhoto}: Creat
   }
 
   function photoChanged(photo: PhotoProps) {
-    return !photo.image.startsWith("http://localhost");
+    return !photo?.image.startsWith("http://localhost");
   }
 
   async function submit(data: StudentProps) {
@@ -33,7 +33,7 @@ export default function useEditStudent({handleSubmit, reset, submitPhoto}: Creat
 
       await editStudent(body, id!);
 
-      if (photo && photoChanged(photo)) await submitPhoto(id!, photo);
+      if (photoChanged(photo)) await submitPhoto(id!, photo);
 
       toast.success("Aluno editado com sucesso");
       setCreateEditOpen(false);

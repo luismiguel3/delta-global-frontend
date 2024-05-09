@@ -1,8 +1,9 @@
-import { Box, Typography, Modal } from "@mui/material";
+import { Typography, Modal } from "@mui/material";
 import { useModalsDashboardStore } from "../../context/useModalsDashboardStore";
 import useCreateStudent from "../../hooks/useCreateStudent";
 import useEditStudent from "../../hooks/useEditStudent";
-import { InputContainer, InputAvatar } from "./index.styles";
+
+import * as S from "./index.styles";
 import useHandleFields from "../../hooks/useHandleFieldsCreateEdit";
 import CustomButton from "../Button";
 import CustomInput from "../Input";
@@ -30,7 +31,6 @@ export default function CreateEdit() {
   const { submit } = id ? useEditStudent(submitProps) : useCreateStudent(submitProps);
 
   const image = watch("photo");
-  console.log(image)
 
   return (
     <Modal
@@ -42,16 +42,7 @@ export default function CreateEdit() {
         alignItems: "center",
         maxWidth: "90vw",
       }}>
-      <Box
-        component="form"
-        noValidate
-        id="form"
-        onSubmit={submit}
-        sx={{
-          backgroundColor: "#fff",
-          padding: "50px",
-          borderRadius: 5,
-        }}>
+      <S.Form component="form" id="form" onSubmit={submit}>
         <Typography
           variant="h4"
           sx={{
@@ -61,11 +52,11 @@ export default function CreateEdit() {
           }}>
           {id ? "Editar Aluno" : "Cadastrar Aluno"}
         </Typography>
-        <InputContainer>
+        <S.AvatarContainer>
           <label htmlFor="file-input">
-            <InputAvatar src={image?.image} alt="Upload image">
+            <S.InputAvatar src={image?.image} alt="Upload image">
               {image ? "" : "Adicionar Foto"}
-            </InputAvatar>
+            </S.InputAvatar>
           </label>
           <input
             id="file-input"
@@ -75,14 +66,8 @@ export default function CreateEdit() {
             {...register("photo")}
             onChange={handleImageChange}
           />
-        </InputContainer>
-        <Box
-          sx={{
-            display: "flex",
-            gap: "20px",
-            flexWrap: "wrap",
-            justifyContent: "center",
-          }}>
+        </S.AvatarContainer>
+        <S.InputFieldContainer>
           {inputFields.map((input) => (
             <CustomInput
               key={input.id}
@@ -95,19 +80,12 @@ export default function CreateEdit() {
               }}
             />
           ))}
-        </Box>
-        <Box
-          sx={{
-            width: "100%",
-            justifyContent: "flex-end",
-            display: "flex",
-            mt: 10,
-            gap: 3,
-          }}>
+        </S.InputFieldContainer>
+        <S.ButtonContainer>
           <CustomButton
             onClick={resetFieldsOnClose}
             sx={{
-              width: "20%",
+              width: "15%",
               backgroundColor: "danger.700",
               "&:hover": {
                 backgroundColor: "danger.800",
@@ -118,12 +96,12 @@ export default function CreateEdit() {
           <CustomButton
             type="submit"
             sx={{
-              width: "20%",
+              width: "15%",
             }}>
             {id ? "Editar" : "Cadastrar"}
           </CustomButton>
-        </Box>
-      </Box>
+        </S.ButtonContainer>
+      </S.Form>
     </Modal>
   );
 }
